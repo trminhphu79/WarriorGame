@@ -2,10 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : Entity
 {
-    public Rigidbody2D rb;
-    public Animator animator;
+    [Header("Move info")]
     [SerializeField]
     private byte moveSpeed = 5;
     [SerializeField]
@@ -15,38 +14,31 @@ public class Player : MonoBehaviour
     [SerializeField]
     private bool isMoving;
 
-    private int facingDir = 1;
-    private bool facingRight = true;
-
     [Header("Dash info")]
     [SerializeField] private float dashSpeed = 10.5f;
     [SerializeField] private float dashTime = 0.4f;
     [SerializeField] private float dashDuration;
     [SerializeField] private float dashCooldown;
     private float dashCooldownTimer;
-
-
-
-    [Header("Collision Check")]
-    [SerializeField] private float groundCheckDistance;
-    [SerializeField] private bool isGrounded = true;
-    [SerializeField] private Transform groundCheck;
-    [SerializeField] private LayerMask whatIsGround;
+   
+    [Header("Attack info")]
+    private bool isAttacking;
+    private int comboCounter;
+    private float counterTimeAttack;
+    private float counterTime = 0.5f;
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        animator = GetComponentInChildren<Animator>();
+        base.Start();
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
-        CollisionCheck();
+        base.Update();
         Movement();
         CheckInput();
-        FlipController();
         AnimatorController(animator);
         ActionTimeController();
     }
@@ -67,12 +59,36 @@ public class Player : MonoBehaviour
         {
             DashAbility();
         }
+
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            StartAttack();
+        }
     }
+
+    private void StartAttack()
+    {
+        if(!isGrounded) { return;  }
+
+        if (counterTimeAttack < 0)
+        {
+            comboCounter = 0;
+        }
+        isAttacking = true;
+        counterTimeAttack = counterTime;
+    }
+
     private void Movement()
     {
+        if (isAttacking)
+        {
+            rb.velocity = new Vector2(0, 0);
+            return;
+        }
+
         if(dashTime > 0)
         {
-            rb.velocity = new Vector2(xInput * dashSpeed, 0);
+            rb.velocity = new Vector2(facingDir * dashSpeed, 0);
         }
         else
         {
@@ -86,16 +102,15 @@ public class Player : MonoBehaviour
         rb.velocity = new Vector2(rb.velocity.x, jump);
     }
 
-    private void CollisionCheck()
+    public void AttackOver()
     {
-        isGrounded = Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, whatIsGround);
+        isAttacking = false;
+        comboCounter++;
+        if (comboCounter > 2)
+        {
+            comboCounter = 0;
+        }
     }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y - groundCheckDistance));
-    }
-
 
     private void AnimatorController(Animator animator)
     {
@@ -105,29 +120,15 @@ public class Player : MonoBehaviour
         animator.SetBool("isMoving", isMoving);
         animator.SetBool("isGrounded", isGrounded);
         animator.SetBool("isDashing", dashTime > 0);
+        animator.SetBool("isAttacking", isAttacking);
+        animator.SetInteger("comboCounter", comboCounter);
     }
 
-    private void Flip()
-    {
-        facingDir = facingDir * -1;
-        facingRight = !facingRight;
-        transform.Rotate(0, 180, 0); 
-    }
-
-    private void FlipController()
-    {
-        if(rb.velocity.x > 0 && !facingRight)
-        {
-            Flip();
-        } else if (rb.velocity.x < 0 && facingRight)
-        {
-            Flip();
-        }
-    }
+  
 
     private void DashAbility()
     {
-        if (dashCooldownTimer < 0)
+        if (dashCooldownTimer < 0 && !isAttacking)
         {
             dashTime = dashDuration;
             dashCooldownTimer = dashCooldown;
@@ -139,5 +140,6 @@ public class Player : MonoBehaviour
     
             dashCooldownTimer -= Time.deltaTime;
             dashTime -= Time.deltaTime;
+            counterTimeAttack -= Time.deltaTime;
     }
 }
