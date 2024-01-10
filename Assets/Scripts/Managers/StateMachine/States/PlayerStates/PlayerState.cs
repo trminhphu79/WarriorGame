@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
-public class PlayerState
+public class PlayerState : IState
 {
     protected PlayerStateMachine stateMachine;
     protected Player player;
