@@ -12,6 +12,7 @@ public class PlayerDashState : PlayerState
     {
         base.Enter();
         stateTimer = player.dashDuration;
+        Debug.Log("stateTimer: " + stateTimer);
     }
 
     public override void Exit()
@@ -24,6 +25,7 @@ public class PlayerDashState : PlayerState
     {
         base.Update();
         player.SetVelecity(player.dashSpeed * player.facingDir, rb.velocity.y);
+        Debug.Log("stateTimer: " + stateTimer);
         if (stateTimer < 0)
         {
             stateMachine.ChangeState(player.idleState);

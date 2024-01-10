@@ -29,7 +29,7 @@ public class PlayerState : IState
 
     public virtual void Update() {
         xInput = Input.GetAxisRaw("Horizontal");
-        stateTimer = Time.deltaTime;
+        stateTimer -= Time.deltaTime;
         player.animator.SetFloat("yVelocity", rb.velocity.y);
         Debug.Log("Current State Update: " + animeBoolName);
     }

@@ -2,20 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStateMachine : IEntityStateMachine
+public class PlayerStateMachine : StateMachine
 {
-    public PlayerState currentState {  get; private set; }
- 
-    public void Initialize(PlayerState _startState)
+    public override void ChangeState(IState _newState)
     {
-        currentState = _startState;
-        currentState.Enter();
+        base.ChangeState(_newState);
     }
 
-    public void ChangeState(PlayerState _newState)
+    public override void Initialize(IState _startState)
     {
-        currentState.Exit();
-        currentState = _newState;
-        currentState.Enter();
+        base.Initialize(_startState);
     }
 }
