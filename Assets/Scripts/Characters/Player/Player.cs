@@ -18,8 +18,12 @@ public class Player : MonoBehaviour
     public float jumpForce { get; private set; } = 12;
     public float facingDir { get; private set; } = 1;
     public bool facingRight { get; private set; }  = true;
-    public float dashDuration { get; private set; } = .4f;
-    public float dashSpeed { get; private set; } = 12;
+
+    public float dashDuration { get; private set; } = .6f;
+    public float dashSpeed { get; private set; } = 14;
+    public float dashDir { get; private set; }
+    public float dashCooldown { get; private set; } = 2;
+    public float dashTimer { get; private set; }
 
     [Header("Collision info")]
     [SerializeField] private Transform groundCheck;
@@ -55,20 +59,30 @@ public class Player : MonoBehaviour
         stateMachine.Initialize(idleState);
     }
 
-    private void FixedUpdate()
-    {
-    }
     private void Update()
     {
         stateMachine.currentState.Update();
+        CheckInputChangeState();
     }
 
-    public void SetVelecity(float _xVelocity, float _yVelocity)
+    public void SetVelocity(float _xVelocity, float _yVelocity)
     {
-        Debug.Log("_xVelocity:  " + _xVelocity);
         rb.velocity = new Vector2(_xVelocity, _yVelocity);
         FlipController(-1);
 
+    }
+
+    private void CheckInputChangeState()
+    {
+        dashTimer -= Time.deltaTime;
+        if (Input.GetKeyDown(KeyCode.LeftShift) && dashTimer < 0)
+        {
+            dashTimer = dashCooldown;
+            dashDir = Input.GetAxisRaw("Horizontal");
+            if(dashDir != 0)
+                stateMachine.ChangeState(dashState);
+        }
+       
     }
 
     public bool isGroundDetected() => Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckDistance, whatIsGround);

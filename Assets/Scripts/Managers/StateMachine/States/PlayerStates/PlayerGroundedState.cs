@@ -21,16 +21,15 @@ public class PlayerGroundedState : PlayerState
     public override void Update()
     {
         base.Update();
-
-        if(Input.GetKeyDown(KeyCode.LeftShift)) {
-            Debug.Log("dashState: ");
-            stateMachine.ChangeState(player.dashState);
+        
+        // if player flying => set state to air for trigger animation falling 
+        if(!player.isGroundDetected())
+        {
+            stateMachine.ChangeState(player.airState);
         }
-
 
         if (Input.GetKeyDown(KeyCode.Space) && player.isGroundDetected())
         {
-            Debug.Log("JUMP");
             stateMachine.ChangeState(player.jumpState);
         }
     }

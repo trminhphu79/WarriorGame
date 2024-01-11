@@ -18,14 +18,14 @@ public class PlayerDashState : PlayerState
     public override void Exit()
     {
         base.Exit();
-        player.SetVelecity(0, rb.velocity.y);
+        player.SetVelocity(0, rb.velocity.y);
     }
 
     public override void Update()
     {
         base.Update();
-        player.SetVelecity(player.dashSpeed * player.facingDir, rb.velocity.y);
-        Debug.Log("stateTimer: " + stateTimer);
+        player.SetVelocity(player.dashSpeed * player.dashDir, 0); 
+        Debug.Log("rb.velocity.y: " + rb.velocity.y);
         if (stateTimer < 0)
         {
             stateMachine.ChangeState(player.idleState);
