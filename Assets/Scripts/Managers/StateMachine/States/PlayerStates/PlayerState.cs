@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Windows;
 using UnityEngine.XR;
 
 public class PlayerState : IState
@@ -11,8 +12,10 @@ public class PlayerState : IState
 
     private string animeBoolName;
     protected float xInput;
+    protected float yInput;
 
     protected float stateTimer;
+    protected bool triggerCalled;
     public PlayerState(Player _player, PlayerStateMachine _stateMachine, string _animeBoolName)
     {
         stateMachine = _stateMachine;
@@ -24,18 +27,21 @@ public class PlayerState : IState
     {
         player.animator.SetBool(animeBoolName, true);
         rb = player.rb;
-        Debug.Log("Current State Enter: " + animeBoolName);
+        triggerCalled = false;
     }
 
     public virtual void Update() {
-        xInput = Input.GetAxisRaw("Horizontal");
+        xInput = UnityEngine.Input.GetAxisRaw("Horizontal");
+        yInput = UnityEngine.Input.GetAxisRaw("Vertical");
         stateTimer -= Time.deltaTime;
         player.animator.SetFloat("yVelocity", rb.velocity.y);
-        Debug.Log("Current State Update: " + animeBoolName);
     }
 
     public virtual void Exit() {
         player.animator.SetBool(animeBoolName, false);
-        Debug.Log("Current State Exit: " + animeBoolName);
+    }
+
+    public virtual void AnimationFinishTrigger() { 
+        triggerCalled = true;
     }
 }

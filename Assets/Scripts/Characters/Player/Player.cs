@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,9 +12,13 @@ public class Player : MonoBehaviour
     public PlayerJumpState jumpState { get; private set; }
     public PlayerAirState airState { get; private set; }
     public PlayerDashState dashState { get; private set; }
+    public PlayerWallSlideState wallSlideState { get; private set; }
+    public PlayerWallJumpState wallJumpState { get; private set; }
+    public PlayerPrimaryAttack playerPrimaryAttack { get; private set; }
     #endregion
 
     #region Properties
+    public bool isBusy { get; private set; }
     public float moveSpeed { get; private set; } = 7f;
     public float jumpForce { get; private set; } = 12;
     public float facingDir { get; private set; } = 1;
@@ -29,7 +34,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundCheckDistance = .8f;
     [SerializeField] private Transform wallCheck;
-    [SerializeField] private float wallCheckDistance = .7f;
+    [SerializeField] private float wallCheckDistance = .11f;
     [SerializeField] private LayerMask whatIsGround;
     [SerializeField] private LayerMask whatIsWall;
 
@@ -49,6 +54,9 @@ public class Player : MonoBehaviour
         jumpState = new PlayerJumpState(this, stateMachine, "Jump");
         airState = new PlayerAirState(this, stateMachine, "Jump");
         dashState = new PlayerDashState(this, stateMachine, "Dash");
+        wallSlideState = new PlayerWallSlideState(this, stateMachine, "WallSlide");
+        wallJumpState = new PlayerWallJumpState(this, stateMachine, "Jump");
+        playerPrimaryAttack = new PlayerPrimaryAttack(this, stateMachine, "Attack");
     }
 
     private void Start()
@@ -65,6 +73,15 @@ public class Player : MonoBehaviour
         CheckInputChangeState();
     }
 
+    public IEnumerable BusyFor(float _seconds)
+    {
+        isBusy = true;
+        Debug.Log("BUSY....");
+        yield return new WaitForSeconds(_seconds);
+        Debug.Log("NOT BUSY....");
+        isBusy = false;
+
+    }
     public void SetVelocity(float _xVelocity, float _yVelocity)
     {
         rb.velocity = new Vector2(_xVelocity, _yVelocity);
@@ -74,6 +91,11 @@ public class Player : MonoBehaviour
 
     private void CheckInputChangeState()
     {
+
+
+        if (isWallDetected())
+            return;
+
         dashTimer -= Time.deltaTime;
         if (Input.GetKeyDown(KeyCode.LeftShift) && dashTimer < 0)
         {
@@ -86,7 +108,7 @@ public class Player : MonoBehaviour
     }
 
     public bool isGroundDetected() => Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckDistance, whatIsGround);
-    // public bool isGroundDetected() => Physics2D.Raycast(wallCheck.position, Vector2.right, wallCheckDistance * facingDir, whatIsGround)
+    public bool isWallDetected() => Physics2D.Raycast(wallCheck.position, Vector2.right * facingDir, wallCheckDistance , whatIsGround);
     public void OnDrawGizmos()
     {
         Gizmos.DrawLine(groundCheck.position, new Vector3(groundCheck.position.x, groundCheck.position.y + groundCheckDistance));
@@ -111,4 +133,5 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void AnimationTrigger() => stateMachine.currentState.AnimationFinishTrigger();
 }

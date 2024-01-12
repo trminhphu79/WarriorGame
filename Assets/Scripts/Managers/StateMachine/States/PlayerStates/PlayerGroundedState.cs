@@ -21,15 +21,19 @@ public class PlayerGroundedState : PlayerState
     public override void Update()
     {
         base.Update();
-        
+
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+            stateMachine.ChangeState(player.playerPrimaryAttack);
+
         // if player flying => set state to air for trigger animation falling 
-        if(!player.isGroundDetected())
+        if (!player.isGroundDetected())
         {
             stateMachine.ChangeState(player.airState);
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && player.isGroundDetected())
         {
+
             stateMachine.ChangeState(player.jumpState);
         }
     }
