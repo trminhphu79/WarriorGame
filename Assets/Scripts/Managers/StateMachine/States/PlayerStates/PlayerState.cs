@@ -42,6 +42,8 @@ public class PlayerState : IState
     }
 
     public virtual void AnimationFinishTrigger() { 
+        Debug.Log("Animation Finish Trigger");
         triggerCalled = true;
     }
+  
 }
