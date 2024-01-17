@@ -10,7 +10,9 @@ public class Enemy : Entity
 
     [Header("Attack info")]
     [SerializeField] public float lastTimeAttacked;
-    [SerializeField] public float attackCheckDistance = 4;
+    [SerializeField] public float attackCheckDistance;
+    [SerializeField] public float attackCooldown;
+    [SerializeField] public float battleTime;
 
     #region Component
     [SerializeField] protected LayerMask whatIsPlayer;
@@ -36,12 +38,15 @@ public class Enemy : Entity
         stateMachine.currentState.Update();
     }
 
-    protected virtual bool isPlayerDetected() => Physics2D.Raycast(playerCheck.position, Vector2.right * facingDir, attackCheckDistance, whatIsPlayer);
+    public virtual RaycastHit2D isPlayerDetected() => Physics2D.Raycast(playerCheck.position, Vector2.right * facingDir, attackCheckDistance, whatIsPlayer);
 
     public override void OnDrawGizmos()
     {
         base.OnDrawGizmos();
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(playerCheck.position, new Vector3(playerCheck.position.x + attackCheckDistance, playerCheck.position.y));
+        Gizmos.DrawLine(playerCheck.position, new Vector3(playerCheck.position.x + attackCheckDistance * facingDir, playerCheck.position.y));
     }
+
+    public void AnimationFinishTrigger() => stateMachine.currentState.AnimationFinishTrigger();
+
 }

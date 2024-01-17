@@ -2,12 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkeletonIdleState : EnemyState
+public class SkeletonIdleState : SkeletonGroundedState
 {
-    public EnemySkeleton enemy;
-    public SkeletonIdleState(Enemy _enemy, EnemyStateMachine _stateMachine, string _animBoolName, EnemySkeleton enemy) : base(_enemy, _stateMachine, _animBoolName)
+    public SkeletonIdleState(Enemy _enemyBase, EnemyStateMachine _stateMachine, string _animBoolName, EnemySkeleton _enemy) : base(_enemyBase, _stateMachine, _animBoolName, _enemy)
     {
-        this.enemy = enemy;
     }
 
     public override void AnimationFinishTrigger()
@@ -29,9 +27,9 @@ public class SkeletonIdleState : EnemyState
     public override void Update()
     {
         base.Update();
+
         if (stateTimer < 0)
-        {
             stateMachine.ChangeState(enemy.skeletonMoveState);
-        }
+
     }
 }
