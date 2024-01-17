@@ -8,7 +8,6 @@ public class EnemySkeleton : Enemy
     public SkeletonIdleState skeletonIdleState { get; private set; }
     public SkeletonMoveState skeletonMoveState { get; private set; }
     #endregion
-
     protected override void Awake()
     {
         base.Awake();
@@ -20,12 +19,16 @@ public class EnemySkeleton : Enemy
     {
         base.Start();
         stateMachine.Initialize(skeletonIdleState);
-
+       
     }
 
     // Update is called once per frame
     protected override void Update()
     {
         base.Update();
+        Debug.Log("SEE PLAYER" + isPlayerDetected());
+
     }
+
+  
 }

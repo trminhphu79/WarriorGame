@@ -48,8 +48,11 @@ public class Player : Entity
 
     protected override void Start()
     {
-       base.Start();
+        base.Start();
         stateMachine.Initialize(idleState);
+        InputEventHandler inputEventHandler = GetComponent<InputEventHandler>();
+        Debug.Log(inputEventHandler);
+        inputEventHandler.SpaceEvent += On_SpaceEvent;
     }
 
     protected override void Update()
@@ -85,4 +88,9 @@ public class Player : Entity
         yield return new WaitForSeconds(_time);
         isBusy = false;
     }
- }
+
+    public void On_SpaceEvent(object sender, InputEventHandler.SpaceEventArgs e)
+    {
+        Debug.Log("Space pressed " + e.spaceCount + " times");
+    }
+}

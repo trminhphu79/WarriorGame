@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SkeletonIdleState : EnemyState
 {
-    private EnemySkeleton enemy;
+    public EnemySkeleton enemy;
     public SkeletonIdleState(Enemy _enemy, EnemyStateMachine _stateMachine, string _animBoolName, EnemySkeleton enemy) : base(_enemy, _stateMachine, _animBoolName)
     {
         this.enemy = enemy;
