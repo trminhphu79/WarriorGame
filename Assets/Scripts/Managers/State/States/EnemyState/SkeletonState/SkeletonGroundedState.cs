@@ -15,7 +15,7 @@ public class SkeletonGroundedState : EnemyState
     public override void Enter()
     {
         base.Enter();
-       player = GameObject.Find("Player").transform;
+        player = PlayerManager.instance.player.transform;
     }
 
     public override void Exit()
@@ -26,7 +26,6 @@ public class SkeletonGroundedState : EnemyState
     public override void Update()
     {
         base.Update();
-        Debug.Log("Distance: " + Vector2.Distance(enemy.transform.position, player.transform.position));
         // If player is detected and distance between player and enemy more than 2 => go to battle state
         if(enemy.isPlayerDetected() || Vector2.Distance(enemy.transform.position , player.transform.position) < 2)
             stateMachine.ChangeState(enemy.skeletonBattleState);

@@ -8,11 +8,6 @@ public class SkeletonIdleState : SkeletonGroundedState
     {
     }
 
-    public override void AnimationFinishTrigger()
-    {
-        base.AnimationFinishTrigger();
-    }
-
     public override void Enter()
     {
         base.Enter();

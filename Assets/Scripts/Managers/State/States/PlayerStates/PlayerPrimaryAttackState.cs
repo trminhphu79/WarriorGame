@@ -14,13 +14,13 @@ public class PlayerPrimaryAttackState : PlayerState
     public override void Enter()
     {
         base.Enter();
+        xInput = 0; // fixbug when player attack direction 
         ResetCombo();
     }
 
     public override void Exit()
     {
         base.Exit();
-        Debug.Log("Exit Attack");
         player.StartCoroutine("MyCoroutine", .15f);
         UpdateEveryThingBeforeExit();
     }

@@ -9,6 +9,7 @@ public class EnemySkeleton : Enemy
     public SkeletonMoveState skeletonMoveState { get; private set; }
     public SkeletonBattleState skeletonBattleState { get; private set; }
     public SkeletonAttackState  skeletonAttackState { get; private set; }
+    public SkeletonStunState skeletonStunState { get; private set; }
     #endregion
     protected override void Awake()
     {
@@ -17,6 +18,7 @@ public class EnemySkeleton : Enemy
         skeletonMoveState = new SkeletonMoveState(this, stateMachine, "Move", this);
         skeletonBattleState = new SkeletonBattleState(this, stateMachine, "Move", this);
         skeletonAttackState = new SkeletonAttackState(this, stateMachine, "Attack", this);
+        skeletonStunState = new SkeletonStunState(this, stateMachine, "Stun", this);
     }
     // Start is called before the first frame update
     protected override void Start()
@@ -29,7 +31,19 @@ public class EnemySkeleton : Enemy
     protected override void Update()
     {
         base.Update();
+        if (Input.GetKeyDown(KeyCode.U))
+            stateMachine.ChangeState(skeletonStunState);
     }
 
     public void AnimationTrigger() => stateMachine.currentState.AnimationFinishTrigger();
+
+    public override bool CanBeStun()
+    {
+        if (base.CanBeStun())
+        {
+            stateMachine.ChangeState(skeletonStunState);
+            return true;
+        }
+        return false;
+    }
 }

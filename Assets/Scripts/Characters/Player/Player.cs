@@ -15,11 +15,13 @@ public class Player : Entity
     public PlayerWallSlideState wallSlideState { get; private set; }
     public PlayerWallJumpState wallJumpState { get; private set; }
     public PlayerPrimaryAttackState playerPrimaryAttack { get; private set; }
-    #endregion
+    public PlayerCounterAttackState playerCounterAttack { get; private set; }
 
-    #region Properties
+    #endregion
+    [Header("Attack info")]
     public Vector2[] attackMovement;
-    public bool isBusy { get; private set; }
+    public float counterAttackDuration { get; set; } = .2f;
+
     public float moveSpeed { get; private set; } = 8f;
     public float jumpForce { get; private set; } = 12;
 
@@ -29,7 +31,9 @@ public class Player : Entity
     public float dashCooldown { get; private set; } = 2;
     public float dashTimer { get; private set; }
 
-    #endregion
+    public bool isBusy { get; private set; }
+   
+
 
 
     protected override void Awake()
@@ -43,7 +47,9 @@ public class Player : Entity
         dashState = new PlayerDashState(this, stateMachine, "Dash");
         wallSlideState = new PlayerWallSlideState(this, stateMachine, "WallSlide");
         wallJumpState = new PlayerWallJumpState(this, stateMachine, "Jump");
+
         playerPrimaryAttack = new PlayerPrimaryAttackState(this, stateMachine, "Attack");
+        playerCounterAttack = new PlayerCounterAttackState(this, stateMachine, "CounterAttack");
     }
 
     protected override void Start()
@@ -91,6 +97,5 @@ public class Player : Entity
 
     public void On_SpaceEvent(object sender, InputEventHandler.SpaceEventArgs e)
     {
-        Debug.Log("Space pressed " + e.spaceCount + " times");
     }
 }

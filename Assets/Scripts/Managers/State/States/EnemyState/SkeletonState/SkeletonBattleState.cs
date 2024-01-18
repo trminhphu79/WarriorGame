@@ -15,7 +15,6 @@ public class SkeletonBattleState : EnemyState
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("ENTER SkeletonBattleState");
         player = GameObject.Find("Player").transform;
     }
 
@@ -30,7 +29,6 @@ public class SkeletonBattleState : EnemyState
         CheckMoveDirection();
         enemy.SetVelocity(enemy.movementSpeed * moveDir, rb.velocity.y);
         CheckAttackPlayer();
-        Debug.Log("stateTimer: " + stateTimer);
     }
 
     protected virtual void CheckMoveDirection()
@@ -63,7 +61,6 @@ public class SkeletonBattleState : EnemyState
             enemy.lastTimeAttacked = Time.time;
             return true;
         }
-        Debug.Log("Can't attack");
         return false;
      }
 }
