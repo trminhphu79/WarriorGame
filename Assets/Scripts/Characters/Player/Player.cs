@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Player : Entity
 {
+
+    public SkillManager skill;
     #region States
     public PlayerStateMachine stateMachine {  get; private set; }
     public PlayerIdleState idleState { get; private set; }
@@ -14,8 +16,10 @@ public class Player : Entity
     public PlayerDashState dashState { get; private set; }
     public PlayerWallSlideState wallSlideState { get; private set; }
     public PlayerWallJumpState wallJumpState { get; private set; }
-    public PlayerPrimaryAttackState playerPrimaryAttack { get; private set; }
-    public PlayerCounterAttackState playerCounterAttack { get; private set; }
+    public PlayerPrimaryAttackState primaryAttack { get; private set; }
+    public PlayerCounterAttackState counterAttack { get; private set; }
+    public PlayerAimSwordState aimSword { get; private set; }
+    public PlayerCatchSwordState catchSword { get; private set; }
 
     #endregion
     [Header("Attack info")]
@@ -28,9 +32,6 @@ public class Player : Entity
     public float dashDuration { get; private set; } = .6f;
     public float dashSpeed { get; private set; } = 14;
     public float dashDir { get; private set; }
-    public float dashCooldown { get; private set; } = 2;
-    public float dashTimer { get; private set; }
-
     public bool isBusy { get; private set; }
    
 
@@ -48,8 +49,13 @@ public class Player : Entity
         wallSlideState = new PlayerWallSlideState(this, stateMachine, "WallSlide");
         wallJumpState = new PlayerWallJumpState(this, stateMachine, "Jump");
 
-        playerPrimaryAttack = new PlayerPrimaryAttackState(this, stateMachine, "Attack");
-        playerCounterAttack = new PlayerCounterAttackState(this, stateMachine, "CounterAttack");
+        primaryAttack = new PlayerPrimaryAttackState(this, stateMachine, "Attack");
+        counterAttack = new PlayerCounterAttackState(this, stateMachine, "CounterAttack");
+
+        aimSword = new PlayerAimSwordState(this, stateMachine, "AimSword");
+        catchSword = new PlayerCatchSwordState(this, stateMachine, "CatchSword");
+
+        skill = SkillManager.instance; 
     }
 
     protected override void Start()
@@ -74,10 +80,8 @@ public class Player : Entity
         if (isWallDetected())
             return;
 
-        dashTimer -= Time.deltaTime;
-        if (Input.GetKeyDown(KeyCode.LeftShift) && dashTimer < 0)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && SkillManager.instance.dashSkill.CanUseSkill())
         {
-            dashTimer = dashCooldown;
             dashDir = Input.GetAxisRaw("Horizontal");
             if(dashDir != 0)
                 stateMachine.ChangeState(dashState);

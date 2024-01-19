@@ -22,11 +22,14 @@ public class PlayerGroundedState : PlayerState
     {
         base.Update();
 
+        if(Input.GetKeyDown(KeyCode.Mouse1))
+            stateMachine.ChangeState(player.aimSword);
+
         if (Input.GetKeyDown(KeyCode.Q))
-            stateMachine.ChangeState(player.playerCounterAttack);
+            stateMachine.ChangeState(player.counterAttack);
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
-            stateMachine.ChangeState(player.playerPrimaryAttack);
+            stateMachine.ChangeState(player.primaryAttack);
 
         // if player flying => set state to air for trigger animation falling 
         if (!player.isGroundDetected())
