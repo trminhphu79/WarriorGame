@@ -54,7 +54,6 @@ public class Entity : MonoBehaviour
     {
         entityFX.StartCoroutine("FlashFX");
         StartCoroutine("HitKnockback", knockbackDuration);
-        Debug.Log("--------- " + gameObject.name + " was damged...");
     }
 
     protected IEnumerator HitKnockback(float knockbackTime)

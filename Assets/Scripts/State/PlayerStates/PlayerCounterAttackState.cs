@@ -9,7 +9,6 @@ public class PlayerCounterAttackState : PlayerState
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("Counter Attack State");
         stateTimer = player.counterAttackDuration;
         player.animator.SetBool("SuccessfulCounterAttack", false);
     }

@@ -11,11 +11,14 @@ public class PlayerAimSwordState : PlayerState
     public override void Enter()
     {
         base.Enter();
+        player.SetZeroVelocity();
+        player.skill.sword.DotsActive(true);
     }
 
     public override void Exit()
     {
         base.Exit();
+        player.rb.velocity = new Vector2(0, 0);
     }
 
     public override void Update()
@@ -23,6 +26,10 @@ public class PlayerAimSwordState : PlayerState
         base.Update();
 
         if(Input.GetKeyUp(KeyCode.Mouse1))
+        {
             stateMachine.ChangeState(player.idleState);
+            Debug.Log("AimSwordState -> IdleState");
+            Debug.Log(player.rb.velocity.x);
+        }
     }
 }

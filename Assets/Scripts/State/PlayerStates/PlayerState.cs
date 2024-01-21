@@ -28,6 +28,8 @@ public class PlayerState : IState
         player.animator.SetBool(animeBoolName, true);
         rb = player.rb;
         triggerCalled = false;
+        Debug.Log(animeBoolName + "----" + "xInput: " + xInput);
+
     }
 
     public virtual void Update() {
@@ -35,10 +37,12 @@ public class PlayerState : IState
         yInput = UnityEngine.Input.GetAxisRaw("Vertical");
         stateTimer -= Time.deltaTime;
         player.animator.SetFloat("yVelocity", rb.velocity.y);
+
     }
 
     public virtual void Exit() {
         player.animator.SetBool(animeBoolName, false);
+        Debug.Log(animeBoolName + "----" + "xInput: " + xInput);
     }
 
     public virtual void AnimationFinishTrigger() { 

@@ -64,7 +64,6 @@ public class Player : Entity
 
         stateMachine.Initialize(idleState);
         InputEventHandler inputEventHandler = GetComponent<InputEventHandler>();
-        Debug.Log(inputEventHandler);
         inputEventHandler.SpaceEvent += On_SpaceEvent;
     }
 
@@ -81,7 +80,7 @@ public class Player : Entity
         if (isWallDetected())
             return;
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) && SkillManager.instance.dashSkill.CanUseSkill())
+        if (Input.GetKeyDown(KeyCode.LeftShift) && SkillManager.instance.dash.CanUseSkill())
         {
             dashDir = Input.GetAxisRaw("Horizontal");
             if(dashDir != 0)

@@ -20,7 +20,6 @@ public class PlayerPrimaryAttack : PlayerState
     public override void Exit()
     {
         base.Exit();
-        Debug.Log("Exit Attack");
         UpdateEveryThingBeforeExit();
     }
 
@@ -53,7 +52,5 @@ public class PlayerPrimaryAttack : PlayerState
     {
         comboCounter++;
         lastTimeAttacked = Time.time;
-        Debug.Log("comboCounter: " + comboCounter);
-        Debug.Log("lastTimeAttacked: " + lastTimeAttacked);
     }
 }

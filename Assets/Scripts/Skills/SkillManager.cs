@@ -5,9 +5,9 @@ using UnityEngine;
 public class SkillManager : MonoBehaviour
 {
     public static SkillManager instance;
-    public DashSkill dashSkill { get; private set; }
-    public CloneSkill cloneSkill { get; private set; }
-   
+    public DashSkill dash { get; private set; }
+    public CloneSkill clone { get; private set; }
+    public SwordSkill sword { get; private set; }
     private void Awake()
     {
         if(instance != null)
@@ -21,12 +21,13 @@ public class SkillManager : MonoBehaviour
 
     private void Start()
     {
-        dashSkill = GetComponent<DashSkill>();
-        cloneSkill = GetComponent<CloneSkill>();
+        dash = GetComponent<DashSkill>();
+        clone = GetComponent<CloneSkill>();
+        sword = GetComponent<SwordSkill>();
     }
 
     public void CreateClone(Transform _clonePosition)
     {
-        cloneSkill.CreateClone(_clonePosition);
+        clone.CreateClone(_clonePosition);
     }
 }
