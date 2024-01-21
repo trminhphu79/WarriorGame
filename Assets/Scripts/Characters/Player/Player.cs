@@ -55,12 +55,13 @@ public class Player : Entity
         aimSword = new PlayerAimSwordState(this, stateMachine, "AimSword");
         catchSword = new PlayerCatchSwordState(this, stateMachine, "CatchSword");
 
-        skill = SkillManager.instance; 
     }
 
     protected override void Start()
     {
         base.Start();
+        skill = SkillManager.instance;
+
         stateMachine.Initialize(idleState);
         InputEventHandler inputEventHandler = GetComponent<InputEventHandler>();
         Debug.Log(inputEventHandler);
