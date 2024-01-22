@@ -16,7 +16,6 @@ public class Entity : MonoBehaviour
     [SerializeField] protected Transform wallCheck;
     [SerializeField] protected float wallCheckDistance = .11f;
     [SerializeField] protected LayerMask whatIsGround;
-    [SerializeField] protected LayerMask whatIsWall;
 
     [Header("Knockback info")]
     [SerializeField] protected Vector2 knockbackDir;

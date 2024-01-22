@@ -30,15 +30,24 @@ public class SwordSkill : Skill
         if (Input.GetKeyUp(KeyCode.Mouse1))
            finalDir = new Vector2(AnimDirection().normalized.x * launchForce.x, AnimDirection().normalized.y * launchForce.y);
         
-       
+       if(Input.GetKey(KeyCode.Mouse1) && !player.sword)
+        {
+            DotsActive(true);
+            for (int i = 0; i < numberOfDots; i++)
+            {
+                dots[i].transform.position = DotsPosition(i * dotSpacing);
+            }
+        }
     }
     public void CreateSkill()
     {
         GameObject sword = Instantiate(swordPrefab, player.transform.position, transform.rotation);
         SwordSkillController controller = sword.GetComponent<SwordSkillController>();
+        Debug.Log(finalDir.y + " ---- " + finalDir.x);
+        controller.SetupSword(finalDir, swordGravity, player);
 
-        controller.SetupSword(launchForce, swordGravity);
-        
+        player.AssigneNewSword(sword);
+        DotsActive(false);
     }
 
     //Caculate the direction of the sword depends on the mouse position and player position

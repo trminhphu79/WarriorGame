@@ -25,16 +25,17 @@ public class Player : Entity
     [Header("Attack info")]
     public Vector2[] attackMovement;
     public float counterAttackDuration { get; set; } = .2f;
-
+    
     public float moveSpeed { get; private set; } = 8f;
     public float jumpForce { get; private set; } = 12;
+    public float swordReturnImpact { get; set; } = 5;
 
     public float dashDuration { get; private set; } = .6f;
     public float dashSpeed { get; private set; } = 14;
     public float dashDir { get; private set; }
     public bool isBusy { get; private set; }
-   
 
+    public GameObject sword { get; private set; }
 
 
     protected override void Awake()
@@ -92,6 +93,16 @@ public class Player : Entity
    
     public void AnimationTrigger() => stateMachine.currentState.AnimationFinishTrigger();
 
+    public void AssigneNewSword(GameObject _sword)
+    {
+        sword = _sword;
+    }
+
+    public void CatchTheSword()
+    {
+        stateMachine.ChangeState(catchSword);
+        Destroy(sword);
+    }
     IEnumerator MyCoroutine(float _time)
     {
         isBusy = true;
