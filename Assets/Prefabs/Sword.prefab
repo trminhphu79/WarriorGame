@@ -133,14 +133,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7016884509315562301}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 0.028443746, w: 0.9995954}
   m_LocalPosition: {x: 40.85, y: 1.99, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 947255113877400154}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 3.26}
 --- !u!50 &6133752956585449053
 Rigidbody2D:
   serializedVersion: 4
@@ -202,7 +202,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0.0461998, y: 0.07188034}
   serializedVersion: 2
-  m_Radius: 0.44190598
+  m_Radius: 0.35
 --- !u!114 &9031528962970250164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,3 +216,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   returnSpeed: 20
+  pierceAmount: 0
+  bounceSpeed: 0

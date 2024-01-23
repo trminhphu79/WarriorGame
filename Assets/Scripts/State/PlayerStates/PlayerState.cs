@@ -28,7 +28,6 @@ public class PlayerState : IState
         player.animator.SetBool(animeBoolName, true);
         rb = player.rb;
         triggerCalled = false;
-        Debug.Log(animeBoolName + "----" + "xInput: " + xInput);
 
     }
 
@@ -42,7 +41,6 @@ public class PlayerState : IState
 
     public virtual void Exit() {
         player.animator.SetBool(animeBoolName, false);
-        Debug.Log(animeBoolName + "----" + "xInput: " + xInput);
     }
 
     public virtual void AnimationFinishTrigger() { 

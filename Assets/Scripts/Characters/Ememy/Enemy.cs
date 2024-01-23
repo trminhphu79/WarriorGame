@@ -23,6 +23,7 @@ public class Enemy : Entity
     [SerializeField] public float attackCooldown;
     [SerializeField] public float battleTime;
 
+    private float defaultMoveSpeed = 1;
     #region Component
     [SerializeField] protected LayerMask whatIsPlayer;
     [SerializeField] protected Transform playerCheck;
@@ -34,6 +35,7 @@ public class Enemy : Entity
     {
         base.Awake();
         stateMachine = new EnemyStateMachine();
+        defaultMoveSpeed = movementSpeed;
     }
 
     protected override void Start()
@@ -47,6 +49,27 @@ public class Enemy : Entity
         stateMachine.currentState.Update();
     }
 
+    public virtual void FreezeTime(bool _timerFrozen)
+    {
+        if(_timerFrozen)
+        {
+            animator.speed = 0;
+            movementSpeed = 0;
+        }
+        else
+        {
+            movementSpeed = defaultMoveSpeed;
+            animator.speed = 1;
+        }
+    }
+
+
+    protected virtual IEnumerator FreezeTimerFor(float _duration)
+    {
+        FreezeTime(true);
+        yield return new WaitForSeconds(_duration);
+        FreezeTime(false);
+    }
     public virtual void OpenCounterAttackWindow()
     {
         canStun = true;

@@ -2,13 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum SwordType
+{
+  Regular,
+  Bounce,
+  Pierce,
+  Spin
+}
 public class SwordSkill : Skill
 {
+    public SwordType swordType = SwordType.Regular;
+    [Header("Bounce info")]
+    [SerializeField] private int bounceAmount;
+    [SerializeField] private float bounceGravity;
+    [SerializeField] private float bounceSpeed;
+
+
+    [Header("Pierce info")]
+    [SerializeField] private int pierceAmount;
+    [SerializeField] private float pierceGravity;
+
     [Header("Sword Skill info")]
     [SerializeField] private GameObject swordPrefab;
     [SerializeField] private Vector2 launchForce;
     [SerializeField] private float swordGravity;
+    [SerializeField] private float freezeTimeDuration;
+    [SerializeField] private float returnSpeed;
 
+    [Header("Spin info")]
+    [SerializeField] private float maxTravelDistance = 7;
+    [SerializeField] private float spinDuration = 2;
+    [SerializeField] private float spinGravity = 1;
+    [SerializeField] private float hitCooldown = .4f;
 
     [Header("Aim dots")]
     [SerializeField] private GameObject aimDotPrefab;
@@ -22,8 +47,11 @@ public class SwordSkill : Skill
     protected override void Start()
     {
         base.Start();
+
         GenerateDots();
+        SetupGravity();
     }
+
     protected override void Update()
     {
         base.Update();
@@ -39,17 +67,59 @@ public class SwordSkill : Skill
             }
         }
     }
+
+
     public void CreateSkill()
     {
         GameObject sword = Instantiate(swordPrefab, player.transform.position, transform.rotation);
         SwordSkillController controller = sword.GetComponent<SwordSkillController>();
-        Debug.Log(finalDir.y + " ---- " + finalDir.x);
-        controller.SetupSword(finalDir, swordGravity, player);
-
+        SetupPropsSword(controller);
+        controller.SetupSword(finalDir, swordGravity, player, freezeTimeDuration, returnSpeed);
         player.AssigneNewSword(sword);
         DotsActive(false);
     }
 
+
+    private void SetupGravity()
+    {
+        switch (swordType)
+        {
+            case SwordType.Regular:
+                swordGravity = pierceGravity;
+                break;
+            case SwordType.Bounce:
+                swordGravity = bounceGravity;
+                break;
+            case SwordType.Pierce:
+                swordGravity = pierceGravity;
+                break;
+            case SwordType.Spin:
+                swordGravity = spinGravity;
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void SetupPropsSword(SwordSkillController _controller)
+    {
+        switch (swordType)
+        {
+            case SwordType.Regular:
+                break;
+            case SwordType.Bounce:
+                _controller.SetupBounce(true, bounceAmount, bounceSpeed);
+                break;
+            case SwordType.Pierce:
+                _controller.SetupPierce(pierceAmount);
+                break;
+            case SwordType.Spin:
+                _controller.SetupSpin(true, maxTravelDistance, spinDuration, hitCooldown);
+                break;
+            default:
+                break;
+        }
+    }
     //Caculate the direction of the sword depends on the mouse position and player position
     public Vector2 AnimDirection()
     {
