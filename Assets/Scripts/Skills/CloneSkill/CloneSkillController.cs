@@ -8,8 +8,8 @@ public class CloneSkillController : MonoBehaviour
     private Animator animator;
 
     [SerializeField] private float colorLoosingSpeed;
-    [SerializeField] public float cloneDuration { get; private set; }
-    [SerializeField] public float cloneTimer { get; private set; }
+    [SerializeField] public float cloneDuration;
+    [SerializeField] public float cloneTimer;
 
     [SerializeField] private Transform attackCheck;
     [SerializeField] private float attackCheckRadius = 0.8f;
@@ -31,14 +31,14 @@ public class CloneSkillController : MonoBehaviour
             spriteRenderer.color = new Color(1, 1, 1, spriteRenderer.color.a - (Time.deltaTime * colorLoosingSpeed));
         }
     }
-    public void SetupClone(Transform _newTransform, float _cloneDuration, bool _canAttack)
+    public void SetupClone(Transform _newTransform, float _cloneDuration, bool _canAttack, Vector3 _offset)
     {
         if (_canAttack)
         {
             var randomValue = Random.Range(1, 3);
             animator.SetInteger("AttackNumber", randomValue);
         }
-        transform.position = _newTransform.position;
+        transform.position = _newTransform.position + _offset;
         cloneDuration = _cloneDuration;
 
         FaceClosestTarget();

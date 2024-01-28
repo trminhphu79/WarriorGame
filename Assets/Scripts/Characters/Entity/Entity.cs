@@ -26,6 +26,7 @@ public class Entity : MonoBehaviour
     public Animator animator { get; private set; }
     public Rigidbody2D rb { get; private set; }
     public EntityFX entityFX { get; private set; }
+    public SpriteRenderer spriteRenderer { get; private set; }
 
     #endregion
 
@@ -38,9 +39,10 @@ public class Entity : MonoBehaviour
     // Start is called before the first frame update
     protected virtual void Start()
     {
-        animator = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
         entityFX = GetComponent<EntityFX>();
+        animator = GetComponentInChildren<Animator>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -62,6 +64,14 @@ public class Entity : MonoBehaviour
         yield return new WaitForSeconds(knockbackTime);
         rb.velocity = Vector2.zero;
         isKnocked = false;
+    }
+
+    public void MakeTransparent(bool _transparent)
+    {
+        if (_transparent)
+            spriteRenderer.color = Color.clear;
+        else
+            spriteRenderer.color = Color.white;
     }
 
     #region Collision

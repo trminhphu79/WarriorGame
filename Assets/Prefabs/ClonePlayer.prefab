@@ -121,6 +121,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorLoosingSpeed: 1
+  cloneDuration: 2
+  cloneTimer: 0
   attackCheck: {fileID: 8167956055488499966}
   attackCheckRadius: 0.8
 --- !u!1 &5846669186440284033

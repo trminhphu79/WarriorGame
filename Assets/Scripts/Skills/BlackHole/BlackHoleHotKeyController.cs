@@ -12,11 +12,15 @@ public class BlackHoleHotKeyController : MonoBehaviour
     private BlackHoleSkillController blackHoleSkillController;
     public void SetupHotKey(KeyCode _myNewHotKey, Transform enemy, BlackHoleSkillController _blackHoleSkillController)
     {
+
+        Debug.Log("Setup hotkey" + _myNewHotKey);
+
         mySpriteRenderer = GetComponent<SpriteRenderer>();
         myText = GetComponentInChildren<TextMeshProUGUI>();
 
         myHotKey = _myNewHotKey;
         myText.text = _myNewHotKey.ToString();
+        myText.color =  Color.red;
         blackHoleSkillController = _blackHoleSkillController;
         this.enemy = enemy;
     }
