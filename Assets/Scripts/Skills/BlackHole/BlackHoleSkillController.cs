@@ -11,7 +11,7 @@ public class BlackHoleSkillController : MonoBehaviour
     [SerializeField] private GameObject hotKeyPrefab;
     [SerializeField] private List<KeyCode> keyCodeList;
 
-    public List<Transform> targets = new List<Transform>();
+    private List<Transform> targets = new List<Transform>();
     private void Update()
     {
         if (canGrow) { 
@@ -24,15 +24,30 @@ public class BlackHoleSkillController : MonoBehaviour
         if (collision.GetComponent<Enemy>() != null)
         {
             collision.GetComponent<Enemy>().FreezeTime(true);
-
-            GameObject newGameObject = Instantiate(hotKeyPrefab, collision.transform.position, Quaternion.identity);
-           KeyCode choosenKey = keyCodeList[Random.Range(0, keyCodeList.Count)];
-           keyCodeList.Remove(choosenKey);
-           Debug.Log("choosenKey: " + choosenKey.ToString());
-           BlackHoleHotKeyController hotKeyController = newGameObject.GetComponent<BlackHoleHotKeyController>();
-           hotKeyController.SetupHotKey(choosenKey);
-        } 
+            CreateHotKey(collision);
+        }
 
         Debug.Log("Triggered:  " + targets.Count);
     }
+
+    private void CreateHotKey(Collider2D collision)
+    {
+        if(keyCodeList.Count == 0)
+        {
+            Debug.Log("No more keys");
+            return;
+        }
+
+        GameObject newGameObject = Instantiate(hotKeyPrefab, collision.transform.position, Quaternion.identity);
+        KeyCode choosenKey = keyCodeList[Random.Range(0, keyCodeList.Count)];
+        keyCodeList.Remove(choosenKey);
+        Debug.Log("choosenKey: " + choosenKey.ToString());
+        BlackHoleHotKeyController hotKeyController = newGameObject.GetComponent<BlackHoleHotKeyController>();
+        hotKeyController.SetupHotKey(choosenKey, collision.transform, this);
+    }
+
+    public void AddEnemyToList(Transform enemy)
+    {
+        targets.Add(enemy);
+    }   
 }

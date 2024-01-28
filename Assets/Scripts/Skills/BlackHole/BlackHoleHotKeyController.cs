@@ -6,21 +6,28 @@ using UnityEngine;
 public class BlackHoleHotKeyController : MonoBehaviour
 {
     private KeyCode myHotKey;
-
+    private SpriteRenderer mySpriteRenderer;
     private TextMeshProUGUI myText;
-
-    public void SetupHotKey(KeyCode _myNewHotKey)
+    private Transform enemy;
+    private BlackHoleSkillController blackHoleSkillController;
+    public void SetupHotKey(KeyCode _myNewHotKey, Transform enemy, BlackHoleSkillController _blackHoleSkillController)
     {
+        mySpriteRenderer = GetComponent<SpriteRenderer>();
         myText = GetComponentInChildren<TextMeshProUGUI>();
+
         myHotKey = _myNewHotKey;
         myText.text = _myNewHotKey.ToString();
+        blackHoleSkillController = _blackHoleSkillController;
+        this.enemy = enemy;
     }
 
     private void Update()
     {
         if(Input.GetKeyDown(myHotKey))
         {
-            Debug.Log("Pressed " + myHotKey);
+            blackHoleSkillController.AddEnemyToList(enemy);
+            myText.color = Color.clear;
+            mySpriteRenderer.color = Color.clear;
         }
     }
 }
