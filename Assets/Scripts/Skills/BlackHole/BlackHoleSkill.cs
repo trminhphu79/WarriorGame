@@ -14,7 +14,7 @@ public class BlackHoleSkill : Skill
     [SerializeField] private int amountOfAttacks;
     [SerializeField] private float cloneCooldownAttack;
 
-    public BlackHoleSkillController blackHoleSkillController;
+    private BlackHoleSkillController blackHoleSkillController;
     public override bool CanUseSkill()
     {
         return base.CanUseSkill();

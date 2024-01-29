@@ -76,6 +76,11 @@ public class Player : Entity
         base.Update();
         stateMachine.currentState.Update();
         CheckInputChangeState();
+
+        if(Input.GetKeyDown(KeyCode.F))
+        {
+            skill.crystalSkill.UseSkill();
+        }
     }
     
     private void CheckInputChangeState()
@@ -91,11 +96,6 @@ public class Player : Entity
                 stateMachine.ChangeState(dashState);
         }
        
-    }
-
-   public void ExisBlackHoleAbility()
-    {
-        stateMachine.ChangeState(airState);
     }
 
     public void AnimationTrigger() => stateMachine.currentState.AnimationFinishTrigger();

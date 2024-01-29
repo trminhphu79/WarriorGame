@@ -37,7 +37,7 @@ public class PlayerBlackHoleState : PlayerState
         base.Update();
 
         if(stateTimer >= 0)
-            rb.velocity = new Vector2(0, 15);
+            rb.velocity = new Vector2(0, 10);
         
         if(stateTimer < 0){
             rb.velocity = new Vector2(0, -.1f);
@@ -46,8 +46,7 @@ public class PlayerBlackHoleState : PlayerState
             {
                 if(player.skill.blackHole.CanUseSkill())
                     skillUsed = true;
-
-                Debug.Log("Skill used");
+                Debug.Log("Skill used: " + skillUsed);
             }
         }
 
