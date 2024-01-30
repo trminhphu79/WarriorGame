@@ -1392,7 +1392,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7016884509315562301, guid: 413be78fd7e2158409ca82b941ba3860, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8912717620677522401, guid: 413be78fd7e2158409ca82b941ba3860, type: 3}
       propertyPath: m_Radius
@@ -21660,6 +21660,9 @@ MonoBehaviour:
   cooldown: 0
   crystalDuration: 3
   crystalPrefab: {fileID: 1080165744835769169, guid: 58e4b3f0902932b4d93142a9f6ce54df, type: 3}
+  canExplode: 1
+  moveSpeed: 0
+  canMoveToEnemy: 0
 --- !u!1001 &3040189609061494624
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21711,6 +21714,14 @@ PrefabInstance:
     - target: {fileID: 3604048198190110002, guid: 58e4b3f0902932b4d93142a9f6ce54df, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6484361741675365426, guid: 58e4b3f0902932b4d93142a9f6ce54df, type: 3}
+      propertyPath: growSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6954228601056165049, guid: 58e4b3f0902932b4d93142a9f6ce54df, type: 3}
+      propertyPath: m_Radius
+      value: 0.7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
